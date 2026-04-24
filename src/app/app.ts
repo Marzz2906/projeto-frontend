@@ -23,7 +23,7 @@ constructor(
 }
 
   READ_tarefas() {
-  this.http.get<Tarefa[]>(`${this.apiURL}/api/getAll`).subscribe(
+  this.http.get<Tarefa[]>(`${this.apiURL}/api/tarefasmarcelo254476`).subscribe(
     resultado => this.arrayDeTarefas.set(resultado));
   }
 
