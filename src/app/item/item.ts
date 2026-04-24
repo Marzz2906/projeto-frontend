@@ -7,12 +7,11 @@ import { Tarefa } from "../tarefa";
   styleUrl: './item.css',
   standalone: false 
 })
-
 export class ItemComponent {
- emEdicao = false;
- @Input() tarefa: Tarefa = new Tarefa("", false);
- @Output() removeTarefa = new EventEmitter();
- @Output() modificaTarefa = new EventEmitter();
+  emEdicao = false;
+  @Input() tarefa: Tarefa = new Tarefa("", false);
+  @Output() removeTarefa = new EventEmitter();
+  @Output() modificaTarefa = new EventEmitter();
 }
 
 
