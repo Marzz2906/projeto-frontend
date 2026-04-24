@@ -10,7 +10,8 @@
     <li *ngFor="let t of arrayDeTarefas()">
       <app-item 
         [tarefa]="t" 
-        (removeTarefa)="REMOVE_tarefa($event)">
+        (removeTarefa)="REMOVE_tarefa($event)"
+        (modificaTarefa)="UPDATE_tarefa($event)">
       </app-item>
     </li>
   </ul>
