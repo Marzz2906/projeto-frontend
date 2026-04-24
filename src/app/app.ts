@@ -44,7 +44,7 @@ UPDATE_tarefa(tarefaAserModificada: Tarefa) {
     // Pegando o ID direto da tarefa, sem usar o indexOf que estava quebrando!
     var id = tarefaAserModificada._id;
     
-    this.http.patch<Tarefa>(`${this.apiURL}/api/update/${id}`, tarefaAserModificada).subscribe(
+    this.http.patch<Tarefa>(`${this.apiURL}/api/updatemarcelo254476/${id}`, tarefaAserModificada).subscribe(
       resultado => { 
         console.log('Tarefa atualizada no banco!'); 
         this.READ_tarefas(); 
