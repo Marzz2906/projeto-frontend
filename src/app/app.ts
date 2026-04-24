@@ -41,14 +41,19 @@ constructor(
 }
 
 UPDATE_tarefa(tarefaAserModificada: Tarefa) {
-    // Pegando o ID direto da tarefa, sem usar o indexOf que estava quebrando!
+    // 1. Pegamos o ID da tarefa que acabou de ser clicada
     var id = tarefaAserModificada._id;
     
-    this.http.patch<Tarefa>(`${this.apiURL}/api/updatemarcelo254476/${id}`, tarefaAserModificada).subscribe(
+    // 2. Avisamos o servidor! 
+    // ATENÇÃO: Se você mudou o nome da rota no backend para incluir o seu RA (ex: updatemarcelo254476), 
+    // você precisa trocar a palavra 'update' aqui no link abaixo para bater com o seu backend!
+    this.http.patch<Tarefa>(`${this.apiURL}/api/update/${id}`, tarefaAserModificada).subscribe(
       resultado => { 
-        console.log('Tarefa atualizada no banco!'); 
-        this.READ_tarefas(); 
+        console.log('Sucesso! Tarefa atualizada no banco!', resultado); 
+        this.READ_tarefas(); // Recarrega a lista
+      },
+      erro => {
+        console.error('ERRO AO SALVAR:', erro);
       }
     );
-  }
 }
