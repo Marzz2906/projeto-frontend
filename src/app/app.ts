@@ -40,17 +40,15 @@ constructor(
   });
 }
 
-  UPDATE_tarefa(tarefaAserModificada: Tarefa) {
- var indice = this.arrayDeTarefas().indexOf(tarefaAserModificada);
- var id = this.arrayDeTarefas()[indice]._id;
- this.http.patch<Tarefa>(`${this.apiURL}/api/update/${id}`,
- tarefaAserModificada).subscribe(
- resultado => { console.log(resultado); this.READ_tarefas(); });
- }
-  adicionar(descricao: string) {
-  this.tarefaService.adicionarTarefa(descricao).subscribe(() => {
-    console.log('Tarefa salva no tarefasDB');
-    this.READ_tarefas(); // Isso faz a lista atualizar na tela [cite: 161]
-  });
-}
+UPDATE_tarefa(tarefaAserModificada: Tarefa) {
+    // Pegando o ID direto da tarefa, sem usar o indexOf que estava quebrando!
+    var id = tarefaAserModificada._id;
+    
+    this.http.patch<Tarefa>(`${this.apiURL}/api/update/${id}`, tarefaAserModificada).subscribe(
+      resultado => { 
+        console.log('Tarefa atualizada no banco!'); 
+        this.READ_tarefas(); 
+      }
+    );
+  }
 }
