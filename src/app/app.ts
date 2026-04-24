@@ -12,7 +12,7 @@ import { TarefaService } from './tarefa.service'; // [cite: 191]
 })
 export class AppComponent {
   title = 'TODOapp';
-  apiURL: string = 'http://localhost:3000';
+  apiURL: string = 'https://projeto-backend-marcelo.onrender.com';
   arrayDeTarefas = signal<Tarefa[]>([]);
   
 constructor(
@@ -34,7 +34,7 @@ constructor(
 
  REMOVE_tarefa(tarefa: Tarefa) {
   // Certifique-se de que o ID da tarefa está chegando corretamente
-  this.http.delete(`http://localhost:3000/api/delete/${tarefa._id}`).subscribe(() => {
+  this.http.delete(`${this.apiURL}/api/delete/${tarefa._id}`).subscribe(() => {
     console.log('Removido do MongoDB!');
     this.READ_tarefas(); // Atualiza a lista na tela
   });

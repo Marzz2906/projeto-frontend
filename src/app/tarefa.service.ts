@@ -5,8 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class TarefaService {
-  // Use a URL da sua API (Backend) [cite: 161, 214, 227]
-  private readonly API = 'http://localhost:3000/api/post';
+private readonly API = 'https://projeto-backend-marcelo.onrender.com';
 
   constructor(private http: HttpClient) { }
 
