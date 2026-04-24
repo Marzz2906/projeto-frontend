@@ -7,12 +7,11 @@
   </button>
   
   <ul>
-    <li *ngFor="let tarefaDoLoop of arrayDeTarefas()">
-   <app-item 
-  *ngFor="let t of arrayDeTarefas()" 
-  [tarefa]="t" 
-  (removeTarefa)="REMOVE_tarefa($event)">
-</app-item>
+    <li *ngFor="let t of arrayDeTarefas()">
+      <app-item 
+        [tarefa]="t" 
+        (removeTarefa)="REMOVE_tarefa($event)">
+      </app-item>
     </li>
   </ul>
 </div>
