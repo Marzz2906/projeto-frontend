@@ -55,17 +55,14 @@ READ_tarefas() {
 UPDATE_tarefa(tarefaAserModificada: Tarefa) {
     var id = tarefaAserModificada._id;
     
-    // O SEGREDO: Criamos um "pacote limpo" só com os campos que o MongoDB permite alterar!
     const pacoteLimpo = {
       descricao: tarefaAserModificada.descricao,
       statusRealizada: tarefaAserModificada.statusRealizada
     };
 
-    // Enviamos o 'pacoteLimpo' no lugar da tarefaAserModificada inteira
     this.http.patch<Tarefa>(`${this.apiURL}/api/update/${id}`, pacoteLimpo).subscribe(
       resultado => { 
         console.log('Sucesso! Tarefa atualizada no banco!', resultado); 
-        this.READ_tarefas(); 
       }
     );
   }
