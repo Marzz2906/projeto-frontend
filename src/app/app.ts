@@ -53,20 +53,20 @@ READ_tarefas() {
 }
 
 UPDATE_tarefa(tarefaAserModificada: Tarefa) {
-    // 1. Pegamos o ID da tarefa que acabou de ser clicada
     var id = tarefaAserModificada._id;
     
-    // 2. Avisamos o servidor! 
-    // ATENÇÃO: Se você mudou o nome da rota no backend para incluir o seu RA (ex: updatemarcelo254476), 
-    // você precisa trocar a palavra 'update' aqui no link abaixo para bater com o seu backend!
-    this.http.patch<Tarefa>(`${this.apiURL}/api/update/${id}`, tarefaAserModificada).subscribe(
+    // O SEGREDO: Criamos um "pacote limpo" só com os campos que o MongoDB permite alterar!
+    const pacoteLimpo = {
+      descricao: tarefaAserModificada.descricao,
+      statusRealizada: tarefaAserModificada.statusRealizada
+    };
+
+    // Enviamos o 'pacoteLimpo' no lugar da tarefaAserModificada inteira
+    this.http.patch<Tarefa>(`${this.apiURL}/api/update/${id}`, pacoteLimpo).subscribe(
       resultado => { 
         console.log('Sucesso! Tarefa atualizada no banco!', resultado); 
-        this.READ_tarefas(); // Recarrega a lista
-      },
-      erro => {
-        console.error('ERRO AO SALVAR:', erro);
+        this.READ_tarefas(); 
       }
     );
-}
+  }
 }
