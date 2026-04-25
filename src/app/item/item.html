@@ -2,7 +2,6 @@
  <input 
     [id]="tarefa._id" 
     type="checkbox" 
-    autocomplete="off"
     [checked]="tarefa.statusRealizada"
     (change)="tarefa.statusRealizada = !tarefa.statusRealizada; modificaTarefa.emit(tarefa)" />
  <label [for]="tarefa._id">{{tarefa.descricao}}</label>
