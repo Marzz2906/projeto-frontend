@@ -24,7 +24,7 @@ constructor(
 
 READ_tarefas() {
     // Voltamos para o getAll, que é a porta que sabemos que está aberta e funcionando no servidor!
-    this.http.get<Tarefa[]>(`${this.apiURL}/api/getAll`).subscribe(
+    this.http.get<Tarefa[]>(`${this.apiURL}/api/getAlltarefasmarcelo254476`).subscribe(
       resultado => this.arrayDeTarefas.set(resultado)
     );
   }
