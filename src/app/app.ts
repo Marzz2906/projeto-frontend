@@ -57,3 +57,4 @@ UPDATE_tarefa(tarefaAserModificada: Tarefa) {
       }
     );
 }
+}
