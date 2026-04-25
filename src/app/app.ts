@@ -22,14 +22,26 @@ constructor(
   this.READ_tarefas();
 }
 
-  READ_tarefas() {
-  this.http.get<Tarefa[]>(`${this.apiURL}/api/update`).subscribe(
-    resultado => this.arrayDeTarefas.set(resultado));
+READ_tarefas() {
+    // Voltamos para o getAll, que é a porta que sabemos que está aberta e funcionando no servidor!
+    this.http.get<Tarefa[]>(`${this.apiURL}/api/getAll`).subscribe(
+      resultado => this.arrayDeTarefas.set(resultado)
+    );
   }
 
   CREATE_tarefa(descricaoNovaTarefa: string) {
-    var novaTarefa = new Tarefa(descricaoNovaTarefa, false);
-    this.http.post<Tarefa>(`${this.apiURL}/api/post`, novaTarefa).subscribe(resultado => { console.log(resultado); this.READ_tarefas(); });
+    // Criamos a tarefa "limpa", sem enviar o ID vazio, para não dar o Erro 400 no banco!
+    const novaTarefaLimpa = {
+      descricao: descricaoNovaTarefa,
+      statusRealizada: false
+    };
+    
+    this.http.post(`${this.apiURL}/api/post`, novaTarefaLimpa).subscribe(
+      resultado => { 
+        console.log('Sucesso! Tarefa salva no banco:', resultado); 
+        this.READ_tarefas(); // Atualiza a lista na tela na mesma hora
+      }
+    );
   }
 
  REMOVE_tarefa(tarefa: Tarefa) {
