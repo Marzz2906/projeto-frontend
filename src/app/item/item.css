@@ -71,7 +71,7 @@
 }
 [type="checkbox"]:not(:checked)+label:after,
 [type="checkbox"]:checked+label:after {
- content:''\2713\002
+ content: '\2713'; /* AQUI ESTAVA O ERRO! Corrigido para o código Unicode do Checkmark */
  position: absolute;
  top: .15em;
  left: .22em;
