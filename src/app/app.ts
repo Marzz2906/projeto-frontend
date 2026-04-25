@@ -47,7 +47,7 @@ UPDATE_tarefa(tarefaAserModificada: Tarefa) {
     // 2. Avisamos o servidor! 
     // ATENÇÃO: Se você mudou o nome da rota no backend para incluir o seu RA (ex: updatemarcelo254476), 
     // você precisa trocar a palavra 'update' aqui no link abaixo para bater com o seu backend!
-    this.http.patch<Tarefa>(`${this.apiURL}/api/getallmarcelo254476/${id}`, tarefaAserModificada).subscribe(
+    this.http.patch<Tarefa>(`${this.apiURL}/api/update/${id}`, tarefaAserModificada).subscribe(
       resultado => { 
         console.log('Sucesso! Tarefa atualizada no banco!', resultado); 
         this.READ_tarefas(); // Recarrega a lista
