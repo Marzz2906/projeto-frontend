@@ -19,7 +19,7 @@ export class App implements OnInit {
   usuarioLogado = signal(false);
 
   tokenJWT = '{ "token": "" }';
-
+  novaPrioridade = signal<'Alta' | 'Média' | 'Baixa'>('Baixa');
 
   private platformId = inject(PLATFORM_ID);
 
@@ -70,12 +70,16 @@ export class App implements OnInit {
   }
 
   CREATE_tarefa(descricaoNovaTarefa: string) {
-    const novaTarefa = new Tarefa(descricaoNovaTarefa, false);
+    if (!descricaoNovaTarefa.trim()) return;
+    const novaTarefa = new Tarefa(descricaoNovaTarefa, false, this.novaPrioridade(), []);
     const token = JSON.parse(this.tokenJWT).token;
 
     this.http.post<Tarefa>(`${this.apiURL}/api/post`, novaTarefa, {
       headers: { 'id-token': token }
-    }).subscribe(() => this.READ_tarefas());
+    }).subscribe(() => {
+      this.READ_tarefas();
+      this.novaPrioridade.set('Baixa');
+    });
   }
 
   async READ_tarefas(retry = true): Promise<void> {

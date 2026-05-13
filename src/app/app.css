@@ -268,3 +268,59 @@ ul {
 .botoes-auth {
     margin-top: 1rem;
 }
+
+/* Priority Selector and Input Group */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 600px) {
+    .input-group {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+.input-group .lg-text-input {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.priority-selector {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    align-items: center;
+    justify-content: center;
+}
+
+.priority-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    opacity: 0.5;
+}
+
+.priority-dot:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}
+
+.priority-dot.selected {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 2px white, 0 0 0 4px var(--primary);
+    opacity: 1;
+}
+
+.dot-alta { background: #ef4444; }
+.dot-media { background: #f59e0b; }
+.dot-baixa { background: #10b981; }

@@ -5,8 +5,16 @@
     <div class="main section-todo">
       <h1>ToDoList de {{ nomeUsuario() }}</h1>
 
-      <input class="lg-text-input" #campoNovoItem
-        (keyup.enter)="CREATE_tarefa(campoNovoItem.value); campoNovoItem.value=''" />
+      <div class="input-group">
+        <input class="lg-text-input" #campoNovoItem placeholder="Adicione uma nova tarefa..."
+          (keyup.enter)="CREATE_tarefa(campoNovoItem.value); campoNovoItem.value=''" />
+        
+        <div class="priority-selector">
+          <span class="priority-dot dot-alta" [class.selected]="novaPrioridade() === 'Alta'" (click)="novaPrioridade.set('Alta')" title="Alta Prioridade"></span>
+          <span class="priority-dot dot-media" [class.selected]="novaPrioridade() === 'Média'" (click)="novaPrioridade.set('Média')" title="Média Prioridade"></span>
+          <span class="priority-dot dot-baixa" [class.selected]="novaPrioridade() === 'Baixa'" (click)="novaPrioridade.set('Baixa')" title="Baixa Prioridade"></span>
+        </div>
+      </div>
 
       <button class="btn-primary" (click)="CREATE_tarefa(campoNovoItem.value); campoNovoItem.value=''">
         Adicionar Tarefa
