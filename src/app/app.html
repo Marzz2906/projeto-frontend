@@ -1,0 +1,100 @@
+<div class="theme-wrapper">
+
+  <div class="layout-container" *ngIf="usuarioLogado()">
+
+    <div class="main section-todo">
+      <h1>ToDoList de {{ nomeUsuario() }}</h1>
+
+      <input class="lg-text-input" #campoNovoItem
+        (keyup.enter)="CREATE_tarefa(campoNovoItem.value); campoNovoItem.value=''" />
+
+      <button class="btn-primary" (click)="CREATE_tarefa(campoNovoItem.value); campoNovoItem.value=''">
+        Adicionar Tarefa
+      </button>
+
+      <ul>
+        <li *ngFor="let tarefaDoLoop of arrayDeTarefas()">
+          <app-item [tarefa]="tarefaDoLoop" (remover)="DELETE_tarefa($event)"
+            (modificaTarefa)="UPDATE_tarefa(tarefaDoLoop)">
+          </app-item>
+        </li>
+      </ul>
+    </div>
+
+    <div class="side-panel">
+
+      <div class="main section-profile">
+        <div class="profile-circle"></div>
+        <h2>Perfil de {{ nomeUsuario() }}</h2>
+
+        <div class="stats">
+          <p>Tarefas concluídas:
+            <strong>{{ tarefasFeitas() }}/{{ arrayDeTarefas().length }}</strong>
+          </p>
+
+        </div>
+      </div>
+
+      <div *ngIf="roleUsuario() === 'adm'" class="admin-panel shadow-minimal">
+        <div class="admin-header" (click)="toggleAdminPainel()">
+          <span>Painel de Controle ADM</span>
+          <span>{{ painelAdminAberto() ? '▲' : '▼' }}</span>
+        </div>
+
+        <div class="admin-content" *ngIf="painelAdminAberto()">
+          <button class="btn-sm" (click)="LISTAR_usuarios()">🔄 Atualizar Lista</button>
+
+          <ul style="margin-top: 1rem;">
+            <li *ngFor="let u of listaUsuarios()" class="user-item-container">
+
+              <div class="user-item">
+                <div class="user-info">
+                  <strong>{{ u.nome }}</strong>
+                  <span class="role-badge">{{ u.role }}</span>
+                </div>
+                <div class="user-actions">
+                  <button *ngIf="u.role !== 'adm'" class="btn-sm" (click)="PROMOVER_usuario(u._id)">Promover</button>
+                  <button class="btn-sm btn-danger" (click)="DELETAR_usuario(u._id)">Remover</button>
+                </div>
+              </div>
+
+              <div class="user-tasks-preview">
+                <ul *ngIf="u.tarefas && u.tarefas.length > 0">
+                  <li *ngFor="let t of u.tarefas" class="mini-task">
+                    <span [class.done]="t.statusRealizada">
+                      {{ t.statusRealizada ? '✅' : '⏳' }} {{ t.descricao }}
+                    </span>
+                  </li>
+                </ul>
+                <p class="no-tasks" *ngIf="!u.tarefas || u.tarefas.length === 0">
+                  Nenhuma tarefa criada.
+                </p>
+              </div>
+
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main login-center" *ngIf="!usuarioLogado()">
+    <h1>TODO APP feito por <br>Marcelo Perdigão</h1>
+    <p>Faça login para acessar suas tarefas!</p>
+    <h2>{{ modoRegistro() ? 'Criar Conta' : 'Entrar' }}</h2>
+
+    <input #username placeholder="nome" class="lg-text-input" />
+    <br>
+    <input #password type="password" placeholder="senha" class="lg-text-input" />
+
+    <div class="botoes-auth">
+      <button *ngIf="!modoRegistro()" class="btn-primary" (click)="Login(username.value, password.value)">Login</button>
+      <button *ngIf="modoRegistro()" class="btn-primary"
+        (click)="Register(username.value, password.value)">Cadastrar</button>
+      <a (click)="toggleModo()" style="cursor: pointer; display: block; margin-top: 10px;">
+        {{ modoRegistro() ? 'Já tenho conta' : 'Criar nova conta' }}
+      </a>
+    </div>
+  </div>
+
+</div>

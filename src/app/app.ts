@@ -1,0 +1,190 @@
+import { Component, signal, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Tarefa } from "./tarefa";
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.html',
+  standalone: false,
+  styleUrl: './app.css'
+})
+
+export class App implements OnInit {
+  protected readonly title = signal('TODOapp');
+
+  arrayDeTarefas = signal<Tarefa[]>([]);
+  apiURL: string;
+  usuarioLogado = signal(false);
+
+  tokenJWT = '{ "token": "" }';
+
+
+  private platformId = inject(PLATFORM_ID);
+
+  constructor(private http: HttpClient) {
+    this.apiURL = 'https://projeto-backend-marcelo.onrender.com';
+  }
+
+  // No app.ts
+  roleUsuario = signal('');
+  nomeUsuario = signal('');
+
+
+  Login(username: string, password: string) {
+    this.http.post(`${this.apiURL}/api/login`, { nome: username, senha: password })
+      .subscribe((res: any) => {
+        this.tokenJWT = JSON.stringify(res);
+        this.roleUsuario.set(res.role);
+        this.nomeUsuario.set(username);
+
+        this.READ_tarefas();
+      });
+  }
+
+
+  // Adicione este signal nas propriedades da classe
+  modoRegistro = signal(false);
+
+  toggleModo() {
+    this.modoRegistro.set(!this.modoRegistro());
+  }
+
+  Register(username: string, password: string) {
+    const credenciais = { "nome": username, "senha": password };
+
+    this.http.post(`${this.apiURL}/api/register`, credenciais).subscribe({
+      next: () => {
+        alert('Conta criada! Agora faça o login.');
+        this.modoRegistro.set(false);
+      },
+      //error: (err) => alert('Erro ao registrar: ' + err.error.message)
+    });
+  }
+
+  async ngOnInit(): Promise<void> {
+    if (isPlatformBrowser(this.platformId)) {
+
+    }
+  }
+
+  CREATE_tarefa(descricaoNovaTarefa: string) {
+    const novaTarefa = new Tarefa(descricaoNovaTarefa, false);
+    const token = JSON.parse(this.tokenJWT).token;
+
+    this.http.post<Tarefa>(`${this.apiURL}/api/post`, novaTarefa, {
+      headers: { 'id-token': token }
+    }).subscribe(() => this.READ_tarefas());
+  }
+
+  async READ_tarefas(retry = true): Promise<void> {
+    try {
+      const token = JSON.parse(this.tokenJWT).token;
+
+      const resultado = await firstValueFrom(
+        this.http.get<Tarefa[]>(`${this.apiURL}/api/getAll`, {
+          headers: {
+            'Cache-Control': 'no-cache',
+            'id-token': token   // 👈 AQUI ESTÁ O SEGREDO
+          }
+        })
+      );
+
+      this.arrayDeTarefas.set(resultado);
+      this.usuarioLogado.set(true);
+
+    } catch (erro) {
+      console.error("Erro ao carregar tarefas:", erro);
+      this.usuarioLogado.set(false);
+
+      if (retry) {
+        setTimeout(() => {
+          this.READ_tarefas(false);
+        }, 2000);
+      }
+    }
+  }
+
+  DELETE_tarefa(tarefa: Tarefa) {
+    const token = JSON.parse(this.tokenJWT).token;
+
+    this.http.delete<Tarefa>(`${this.apiURL}/api/delete/${tarefa._id}`, {
+      headers: { 'id-token': token }
+    }).subscribe(() => this.READ_tarefas());
+  }
+
+  UPDATE_tarefa(tarefa: Tarefa) {
+    const token = JSON.parse(this.tokenJWT).token;
+
+    this.http.patch<Tarefa>(
+      `${this.apiURL}/api/update/${tarefa._id}`,
+      tarefa,
+      {
+        headers: { 'id-token': token }
+      }
+    ).subscribe(() => this.READ_tarefas());
+  }
+
+  listaUsuarios = signal<any[]>([]);
+
+  // 1. LISTAR: Busca todos os usuários no banco
+  LISTAR_usuarios() {
+    const token = JSON.parse(this.tokenJWT).token;
+    this.http.get<any[]>(`${this.apiURL}/api/usuarios`, {
+      headers: { 'id-token': token }
+    }).subscribe({
+      next: (res) => this.listaUsuarios.set(res),
+      error: (err) => console.error('Erro ao listar:', err)
+    });
+  }
+
+  // 2. PROMOVER: Altera a role do usuário para 'adm'
+  PROMOVER_usuario(id: string) {
+    const token = JSON.parse(this.tokenJWT).token;
+    this.http.patch(`${this.apiURL}/api/usuario/promover/${id}`, {}, {
+      headers: { 'id-token': token }
+    }).subscribe({
+      next: () => {
+        alert('Usuário promovido!');
+        this.LISTAR_usuarios(); // Atualiza a lista na tela
+      },
+      error: (err) => alert('Erro: ' + err.error.message)
+    });
+  }
+
+  // 3. DELETAR: Remove o usuário permanentemente
+  DELETAR_usuario(id: string) {
+    if (!confirm('Tem certeza que deseja remover este usuário?')) return;
+
+    const token = JSON.parse(this.tokenJWT).token;
+    this.http.delete(`${this.apiURL}/api/usuario/${id}`, {
+      headers: { 'id-token': token }
+    }).subscribe({
+      next: () => {
+        alert('Usuário removido!');
+        this.LISTAR_usuarios(); // Atualiza a lista na tela
+      },
+      error: (err) => alert('Erro ao deletar: ' + err.error.message)
+    });
+  }
+
+  painelAdminAberto = signal(false);
+
+  toggleAdminPainel() {
+    this.painelAdminAberto.set(!this.painelAdminAberto());
+
+    // Se abrir e a lista estiver vazia, carrega automaticamente
+    if (this.painelAdminAberto() && this.listaUsuarios().length === 0) {
+      this.LISTAR_usuarios();
+    }
+  }
+
+  tarefasFeitas() {
+    // Filtra o array de tarefas para contar apenas as que possuem statusRealizada = true
+    return this.arrayDeTarefas().filter(t => t.statusRealizada).length;
+  }
+
+}
+
+

@@ -1,0 +1,136 @@
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin: 2rem auto;
+    padding: 0 16px;
+    max-width: 1000px;
+}
+
+@media screen and (min-width: 768px) {
+    .layout-container {
+        flex-direction: row;
+    }
+}
+
+.main {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    width: 100%;
+}
+
+.section-todo {
+    flex: 2;
+}
+
+.side-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+h1, h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+}
+
+h2 {
+    font-size: 1.25rem;
+}
+
+ul {
+    list-style: none;
+}
+
+.section-profile {
+    text-align: left;
+}
+
+.profile-circle {
+    display: none;
+}
+
+.stats p {
+    color: var(--text-muted);
+}
+
+.stats strong {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.admin-panel {
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.admin-header {
+    background: #f9fafb;
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+}
+
+.user-item-container {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.user-item-container:last-child {
+    border-bottom: none;
+}
+
+.user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.role-badge {
+    font-size: 0.75rem;
+    background: #f3f4f6;
+    color: var(--text-muted);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+}
+
+.user-tasks-preview {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 6px;
+    font-size: 0.875rem;
+}
+
+.login-center {
+    max-width: 400px;
+    margin: 10vh auto;
+    text-align: left;
+}
+
+.login-center h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    background: none;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+}
+
+.login-center p {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+.botoes-auth {
+    margin-top: 1rem;
+}
