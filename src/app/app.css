@@ -9,7 +9,7 @@
 
 @media screen and (min-width: 768px) {
     .layout-container {
-        flex-direction: row-reverse;
+        flex-direction: row-reverse !important;
     }
 }
 
