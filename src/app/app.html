@@ -5,16 +5,8 @@
     <div class="main section-todo">
       <h1>ToDoList de {{ nomeUsuario() }}</h1>
 
-      <div class="input-group">
-        <input class="lg-text-input" #campoNovoItem placeholder="Adicione uma nova tarefa..."
-          (keyup.enter)="CREATE_tarefa(campoNovoItem.value); campoNovoItem.value=''" />
-        
-        <div class="priority-selector">
-          <span class="priority-dot dot-alta" [class.selected]="novaPrioridade() === 'Alta'" (click)="novaPrioridade.set('Alta')" title="Alta Prioridade"></span>
-          <span class="priority-dot dot-media" [class.selected]="novaPrioridade() === 'Média'" (click)="novaPrioridade.set('Média')" title="Média Prioridade"></span>
-          <span class="priority-dot dot-baixa" [class.selected]="novaPrioridade() === 'Baixa'" (click)="novaPrioridade.set('Baixa')" title="Baixa Prioridade"></span>
-        </div>
-      </div>
+      <input class="lg-text-input" #campoNovoItem
+        (keyup.enter)="CREATE_tarefa(campoNovoItem.value); campoNovoItem.value=''" />
 
       <button class="btn-primary" (click)="CREATE_tarefa(campoNovoItem.value); campoNovoItem.value=''">
         Adicionar Tarefa
@@ -102,8 +94,9 @@
     </div>
   </div>
 
-    <h1>TODO APP <br> Premium Edition</h1>
-    <p>Organize suas tarefas com estilo!</p>
+  <div class="main login-center" *ngIf="!usuarioLogado()">
+    <h1>TODO APP feito por <br>Marcelo Perdigão</h1>
+    <p>Faça login para acessar suas tarefas!</p>
     <h2>{{ modoRegistro() ? 'Criar Conta' : 'Entrar' }}</h2>
 
     <input #username placeholder="nome" class="lg-text-input" />
