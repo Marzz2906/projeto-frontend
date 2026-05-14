@@ -66,14 +66,25 @@
 
           <div class="user-list">
             <div *ngFor="let u of listaUsuarios()" class="user-card">
-              <div class="user-main-info">
+              <div class="user-main-info" *ngIf="usuarioEditando()?._id !== u._id">
                 <div class="user-meta">
                   <span class="user-name">{{ u.nome }}</span>
                   <span class="badge" [class.badge-adm]="u.role === 'adm'">{{ u.role }}</span>
                 </div>
                 <div class="user-actions">
+                  <button class="btn-icon" (click)="EDITAR_usuario(u)" title="Editar">✏️</button>
                   <button *ngIf="u.role !== 'adm'" class="btn-icon" (click)="PROMOVER_usuario(u._id)" title="Promover">⬆️</button>
                   <button class="btn-icon btn-del" (click)="DELETAR_usuario(u._id)" title="Remover">🗑️</button>
+                </div>
+              </div>
+
+              <!-- Formulário de Edição Inline -->
+              <div class="user-edit-info" *ngIf="usuarioEditando()?._id === u._id">
+                <input #editNome [value]="u.nome" class="lg-text-input edit-input" placeholder="Novo nome" />
+                <input #editSenha type="password" class="lg-text-input edit-input" placeholder="Nova senha (opcional)" />
+                <div class="user-actions-edit">
+                  <button class="btn-icon" (click)="SALVAR_edicao_usuario(u._id, editNome.value, editSenha.value)" title="Salvar">💾</button>
+                  <button class="btn-icon" (click)="usuarioEditando.set(null)" title="Cancelar">❌</button>
                 </div>
               </div>
               

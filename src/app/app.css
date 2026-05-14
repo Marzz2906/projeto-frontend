@@ -109,8 +109,42 @@ ul {
 
 /* Painel ADM Novo */
 .admin-panel-new {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 320px;
+    z-index: 1000;
     padding: 0;
-    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    background: white;
+    max-height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-content {
+    padding: 1rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.user-edit-info {
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--border);
+    margin-top: 0.5rem;
+}
+
+.edit-input {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+}
+
+.user-actions-edit {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
 }
 
 .admin-header-new {
@@ -135,9 +169,7 @@ ul {
     letter-spacing: 0.05em;
 }
 
-.admin-content {
-    padding: 1rem;
-}
+
 
 .btn-refresh {
     width: 100%;

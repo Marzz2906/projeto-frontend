@@ -24,7 +24,7 @@ export class App implements OnInit {
   private platformId = inject(PLATFORM_ID);
 
   constructor(private http: HttpClient) {
-    this.apiURL = 'https://projeto-backend-marcelo.onrender.com';
+    this.apiURL = 'https://tarefas-zayon.onrender.com';
   }
 
   // No app.ts
@@ -131,6 +131,7 @@ export class App implements OnInit {
   }
 
   listaUsuarios = signal<any[]>([]);
+  usuarioEditando = signal<any>(null);
 
   // 1. LISTAR: Busca todos os usuários no banco
   LISTAR_usuarios() {
@@ -140,6 +141,30 @@ export class App implements OnInit {
     }).subscribe({
       next: (res) => this.listaUsuarios.set(res),
       error: (err) => console.error('Erro ao listar:', err)
+    });
+  }
+
+  EDITAR_usuario(u: any) {
+    this.usuarioEditando.set(u);
+  }
+
+  SALVAR_edicao_usuario(id: string, novoNome: string, novaSenha?: string) {
+    const token = JSON.parse(this.tokenJWT).token;
+    const payload: any = { nome: novoNome };
+    
+    if (novaSenha && novaSenha.trim() !== '') {
+      payload.senha = novaSenha;
+    }
+
+    this.http.patch(`${this.apiURL}/api/usuario/${id}`, payload, {
+      headers: { 'id-token': token }
+    }).subscribe({
+      next: () => {
+        alert('Usuário atualizado com sucesso!');
+        this.usuarioEditando.set(null);
+        this.LISTAR_usuarios();
+      },
+      error: (err) => alert('Erro ao atualizar: ' + err.error.message)
     });
   }
 

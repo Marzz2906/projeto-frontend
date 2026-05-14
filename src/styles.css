@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 :root {
-    --primary: #000000;
-    --bg-body: #ffffff;
+    --primary: #0f172a;
+    --bg-body: #fafafa;
     --bg-surface: #ffffff;
-    --text-main: #111827;
-    --text-muted: #6b7280;
-    --border: #e5e7eb;
-    --radius: 6px;
+    --text-main: #1f2937;
+    --text-muted: #9ca3af;
+    --border: #f3f4f6;
+    --radius: 8px;
 }
 
 * {
